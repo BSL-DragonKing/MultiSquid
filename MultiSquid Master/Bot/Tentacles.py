@@ -12,30 +12,31 @@ class Tentacles(commands.Cog):
         self.client = client
         self.happy = discord.utils.get(client.get_guild(694981576467021884).emojis, name='happysquid')
         self.sad = discord.utils.get(client.get_guild(694981576467021884).emojis, name='sadsquid')
-        self.servers = client.get_channel(717100060000911551)
+        self.oceans = client.get_channel(717100060000911551)
     
     @commands.Cog.listener()
-    async def on_error(self, ctx, event, args, kwargs):
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send('Please put in all the things you need to work this command.')
+    async def on_command_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument): return
+        await ctx.send('Please put in all the things you need to work this command.')
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild: discord.Guild):
-        #with open('prefixes.json', 'r') as f:
-        #    prefixes = json.load(f)
-        #prefixes[str(guild.id)] = '-'
-        #with open('prefixes.json', 'w') as f:
-        #    json.dump(prefixes, f, indent=4)
-        await self.servers.send(embed=discord.Embed(title="{} I Explored a New Ocean! {}".format(self.happy, self.happy), description='',timestamp=datetime.datetime.utcnow(), color=0x03f0fc))
-    
+        join = discord.Embed(title="{} I Explored a New Ocean! {}".format(self.happy, self.happy),timestamp=datetime.datetime.utcnow(), color=0x03f0fc)
+        join.set_footer(text='Server ID: {}'.format(guild.id))
+        join.add_field(name=f'**Server Name**', value='{}'.format(guild.name))
+        join.add_field(name=f'**Server Owner**', value='{} User ID: {}'.format(guild.owner, guild.owner_id))
+        join.add_field(name=f'**Server Region**', value='{}'.format(guild.region))
+        join.set_image(url='{}'.format(guild.icon_url_as(format='png')))
+        await self.oceans.send(embed=join)
+        await guild.system_channel.send(f'Thanks for inviting me to your server! Remember that this bot is currently in a ALPHA Phase. If ever in doubt for anything please use \'-support\' to get a invite to my support server! Anyways Have fun and enjoy having MultiSquid around!')
+
     @commands.Cog.listener()
     async def on_guild_remove(self, guild: discord.Guild):
-        #with open('prefixes.json', 'r') as f:
-        #    prefixes = json.load(f)
-        #prefixes.pop[str(guild.id)]
-        #with open('prefixes.json', 'w') as f:
-        #    json.dump(prefixes, f, indent=4)
-        await self.servers.send(embed=discord.Embed(title="{}The Kraken Scared Us Away!".format(self.sad),description='{} {}'.format(guild.name, guild.id),timestamp=datetime.datetime.utcnow(),color=0x00ff00))
+        leave = discord.Embed(title='{}The Kraken Scared Us Away! {}'.format(self.sad, self.sad),timestamp=datetime.datetime.utcnow(),color=0x00ff00)
+        leave.set_footer(text='{}'.format(guild.id))
+        leave.add_field(name=f'**Server Owner**', value='{} User ID: {}'.format(guild.owner, guild.owner_id))
+        leave.set_image(url='{}'.format(guild.icon_url_as(format='png')))
+        await self.oceans.send(embed=leave)
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
@@ -78,7 +79,6 @@ class Tentacles(commands.Cog):
             await message.edit (content=None, embed=remhome)
             await message.remove_reaction (reaction, user)
             for r in ['⬅']: await message.add_reaction(r)
-        
 
 def setup(client):
     client.add_cog(Tentacles(client))

@@ -1,0 +1,98 @@
+* {
+    color: white;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+body{
+    background-color:  rgb(54, 54, 54);
+    font-size: 35px;
+    font-family: Verdana, Geneva, Arial, sans-serif;
+}
+
+table{
+    margin-left: 20px;
+    margin-right: 20px;
+    border: thick solid  rgb(54, 54, 54);
+    caption-side: bottom;
+    border-collapse: collapse;
+    width: 90%;
+    margin: auto;
+}
+
+td, th{
+    border: thick solid black;
+    padding: 5px;
+}
+  
+th{
+    background-color: orange;
+}
+  
+tr:nth-child(odd){
+    background-color: lightskyblue;
+}
+
+img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.menu{
+    list-style-type: none;
+}
+
+.leftalign{
+    text-align: left;
+}
+
+.rightalign{
+    text-align: right;
+}
+
+.centeralign{
+    text-align: center;
+}
+
+.hover {
+    background-color: rgb(126, 126, 126); 
+    color: inherit;
+}
+
+#navig li a:hover:not(.hover) {
+    background-color: black;
+}
+
+.callout {
+    font-size: 20px;
+    position: fixed;
+    bottom: 35px;
+    right: 20px;
+    margin-left: 20px;
+    max-width: 300px;
+}
+  
+  .callout-header {
+    padding: 25px 15px;
+    background: #555;
+    font-size: 30px;
+    color: white;
+}
+  
+  .callout-container {
+    padding: 15px;
+    background-color: #ccc;
+    color: black
+}
+  
+  .closebtn {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+}
+  
+  .closebtn:hover {
+    color: lightgrey;
+}

@@ -1,4 +1,5 @@
 import discord
+import datetime
 from discord.ext import commands
 
 class Moderation(commands.Cog):
@@ -17,13 +18,13 @@ class Moderation(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(kick_members=True)
-    async def kick(self, ctx, member : discord.Member, *, reason=None):
+    async def kick(self, ctx, member: discord.Member, *, reason=None):
         await member.kick(reason=reason)
         await ctx.send(f'Kicked {member.mention}')
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx, member : discord.Member, *, reason=None):
+    async def ban(self, ctx, member: discord.Member, *, reason=None):
         await member.ban(reason=reason)
         await ctx.send(f'Banned {member.mention}')
 
@@ -40,6 +41,26 @@ class Moderation(commands.Cog):
                 await ctx.guild.unban(user)
                 await ctx.send(f'Unbanned {user.mention}')
                 return
-      
+
+    @commands.command()
+    async def muterole(self, member: discord.Member):
+        SquidyMute = discord.utils.get(member.guild.roles, name='SquidyMute')
+        if SquidyMute is None: SquidyMute = await member.guild.create_role(name='SquidyMute', reason='Needed a mute role!')
+        if SquidyMute is True: pass
+
+    @commands.command()
+    @commands.has_permissions(manage_roles=True)
+    async def mute(self, ctx, member: discord.Member, *, reason=None):
+        SquidyMute = discord.utils.get(member.guild.roles, name='SquidyMute')
+        await member.add_roles(SquidyMute)
+        await ctx.send(f'Muted {member.mention}')
+
+    @commands.command()
+    @commands.has_permissions(manage_roles=True)
+    async def unmute(self, ctx, member: discord.Member, *, reason=None):
+        SquidyMute = discord.utils.get(member.guild.roles, name='SquidyMute')
+        await member.remove_roles(SquidyMute)
+        await ctx.send(f'Unmuted {member.mention}')
+
 def setup(client):
     client.add_cog(Moderation(client))
